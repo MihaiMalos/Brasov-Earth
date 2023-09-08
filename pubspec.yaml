@@ -1,4 +1,4 @@
-name: hello_map
+name: brasov_earth
 description: A Flutter example using Maps SDK for Flutter.
 
 publish_to: 'none'
@@ -11,16 +11,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  get_it: 
+  bloc: 
+  flutter_bloc:
   gem_kit:
     path: plugins/gem_kit
+  equatable:
 
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   flutter_lints: ^2.0.0
 
 flutter:

@@ -1,20 +1,27 @@
+import 'package:brasov_earth/router/app_router.dart';
+import 'package:brasov_earth/screens/home_page/cubit/home_page_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:hello_map/home_page/home_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(BrasovEarth());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class BrasovEarth extends StatelessWidget {
+  BrasovEarth({super.key});
+
+  final AppRouter _appRouter = AppRouter();
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Brasov Earth',
-      home: HomePage(),
+    return BlocProvider(
+      create: (context) => HomePageCubit(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Brasov Earth',
+        onGenerateRoute: _appRouter.onGenerateRoute,
+      ),
     );
   }
 }
