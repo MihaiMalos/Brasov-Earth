@@ -11,7 +11,7 @@ class HomePageCubit extends Cubit<HomePageState> {
   HomePageCubit()
       : super(const HomePageState(
           currentPosition: null,
-          selectedLandmark: null,
+          selectedLandmarkInfo: null,
           currentState: HomePageStates.initialState,
         ));
 
@@ -28,12 +28,14 @@ class HomePageCubit extends Cubit<HomePageState> {
     final landmark =
         await landmarkRepository!.selectLandmarkByScreenCoordinates(pos);
     if (landmark != null) {
-      LandmarkInfo info = await landmarkRepository!.getLandmarkInfo(landmark);
-      print(info.coordinates.longitude);
+      LandmarkInfo landmarkInfo =
+          await landmarkRepository!.getLandmarkInfo(landmark);
       emit(state.copyWith(
-        selectedLandmark: landmark,
+        selectedLandmarkInfo: landmarkInfo,
         currentState: HomePageStates.landmarkPressed,
       ));
+    } else {
+      emit(state.copyWith(currentState: HomePageStates.emptySpacePressed));
     }
   }
 }

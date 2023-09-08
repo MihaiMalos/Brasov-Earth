@@ -1,35 +1,38 @@
 import 'dart:math';
 
+import 'package:brasov_earth/repositories/interfaces/landmark_repository.dart';
 import 'package:gem_kit/api/gem_landmark.dart';
 import 'package:equatable/equatable.dart';
 
 enum HomePageStates {
   initialState,
   landmarkPressed,
+  emptySpacePressed,
 }
 
 class HomePageState extends Equatable {
   final Point<num>? currentPosition;
-  final Landmark? selectedLandmark;
+  final LandmarkInfo? selectedLandmarkInfo;
   final HomePageStates currentState;
 
   const HomePageState({
     this.currentPosition,
-    this.selectedLandmark,
+    this.selectedLandmarkInfo,
     this.currentState = HomePageStates.initialState,
   });
 
   HomePageState copyWith({
     Point<num>? currentPosition,
-    Landmark? selectedLandmark,
+    LandmarkInfo? selectedLandmarkInfo,
     HomePageStates? currentState,
   }) =>
       HomePageState(
         currentPosition: currentPosition ?? this.currentPosition,
-        selectedLandmark: selectedLandmark ?? this.selectedLandmark,
+        selectedLandmarkInfo: selectedLandmarkInfo ?? this.selectedLandmarkInfo,
         currentState: currentState ?? this.currentState,
       );
 
   @override
-  List<Object?> get props => [currentPosition, selectedLandmark, currentState];
+  List<Object?> get props =>
+      [currentPosition, selectedLandmarkInfo, currentState];
 }

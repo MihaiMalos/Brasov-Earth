@@ -2,6 +2,8 @@
 
 import 'package:brasov_earth/injection_container.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_cubit.dart';
+import 'package:brasov_earth/screens/home_page/cubit/home_page_state.dart';
+import 'package:brasov_earth/screens/home_page/view/widgets/landmark_panel.dart';
 import 'package:brasov_earth/utility/file_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -36,6 +38,10 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: IconButton(
+        icon: const Icon(Icons.location_searching),
+        onPressed: () {},
+      ),
       body: Center(
         child: Stack(
           children: [
@@ -92,6 +98,16 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+            BlocBuilder<HomePageCubit, HomePageState>(
+              builder: (context, state) {
+                if (state.currentState == HomePageStates.landmarkPressed) {
+                  return LandmarkPanel(
+                      landmarkInfo: state.selectedLandmarkInfo!);
+                } else {
+                  return Container();
+                }
+              },
+            )
           ],
         ),
       ),

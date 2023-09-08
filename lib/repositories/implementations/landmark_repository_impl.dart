@@ -72,13 +72,11 @@ class LandmarkRepositoryImpl implements LandmarkRepository {
         await ImageUtility.decodeImageData(landmark.getImage(100, 100));
     String name = landmark.getName();
     Coordinates coordinates = landmark.getCoordinates();
-    List<LandmarkCategory> categories = landmark.getCategories();
 
     return LandmarkInfo(
       icon: icon,
       name: name,
       coordinates: coordinates,
-      categories: categories,
     );
   }
 }
