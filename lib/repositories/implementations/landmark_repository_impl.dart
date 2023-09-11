@@ -1,15 +1,16 @@
 import 'dart:async';
 import 'dart:math';
-import 'package:brasov_earth/repositories/models/interfaces/landmark_info.dart';
 import 'dart:typed_data';
 
-import 'package:brasov_earth/repositories/interfaces/landmark_repository.dart';
-import 'package:brasov_earth/utility/image_utility.dart';
 import 'package:gem_kit/api/gem_coordinates.dart';
 import 'package:gem_kit/api/gem_landmark.dart';
 import 'package:gem_kit/api/gem_searchservice.dart';
 import 'package:gem_kit/gem_kit_basic.dart';
 import 'package:gem_kit/gem_kit_map_controller.dart';
+
+import 'package:brasov_earth/repositories/models/interfaces/landmark_info.dart';
+import 'package:brasov_earth/repositories/interfaces/landmark_repository.dart';
+import 'package:brasov_earth/utility/image_utility.dart';
 
 class LandmarkRepositoryImpl implements LandmarkRepository {
   final GemMapController _mapController;

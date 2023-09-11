@@ -1,5 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:brasov_earth/injection_container.dart';
+import 'package:brasov_earth/repositories/injection_container.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_cubit.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_state.dart';
 import 'package:brasov_earth/screens/home_page/view/widgets/landmark_panel.dart';
@@ -33,24 +33,6 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.white,
-        onPressed: () async =>
-            await context.read<HomePageCubit>().followPosition(),
-        child: const Icon(
-          Icons.location_searching,
-          color: Colors.blue,
-        ),
-      ),
-      bottomSheet: BlocBuilder<HomePageCubit, HomePageState>(
-        builder: (context, state) {
-          if (state.currentState == HomePageStates.landmarkPressed) {
-            return LandmarkPanel(landmarkInfo: state.selectedLandmark!);
-          } else {
-            return const SizedBox();
-          }
-        },
-      ),
       body: Center(
         child: Stack(
           children: [
@@ -106,6 +88,44 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ],
+            ),
+            BlocBuilder<HomePageCubit, HomePageState>(
+              builder: (context, state) {
+                final verticalInset =
+                    state.selectedLandmark == null ? 20.0 : 170.0;
+                const horizontalInset = 20.0;
+                return Align(
+                  alignment: Alignment.bottomRight,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: horizontalInset, vertical: verticalInset),
+                    child: Material(
+                      borderRadius: BorderRadius.circular(30),
+                      elevation: 5,
+                      child: CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 30,
+                        child: IconButton(
+                          color: Colors.amber,
+                          onPressed: () async =>
+                              context.read<HomePageCubit>().followPosition(),
+                          icon: const Icon(
+                            Icons.location_searching,
+                            color: Colors.blue,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+            BlocBuilder<HomePageCubit, HomePageState>(
+              builder: (context, state) {
+                return state.selectedLandmark != null
+                    ? LandmarkPanel(landmarkInfo: state.selectedLandmark!)
+                    : const SizedBox();
+              },
             ),
           ],
         ),

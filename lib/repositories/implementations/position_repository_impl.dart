@@ -1,14 +1,14 @@
 import 'dart:async';
-import 'dart:ui';
-import 'package:brasov_earth/repositories/interfaces/position_repository.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 import 'package:gem_kit/api/gem_coordinates.dart';
 import 'package:gem_kit/api/gem_mapviewpreferences.dart';
 import 'package:gem_kit/api/gem_types.dart';
-import 'package:permission_handler/permission_handler.dart';
-
 import 'package:gem_kit/gem_kit_map_controller.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:gem_kit/gem_kit_position.dart';
+
+import 'package:brasov_earth/repositories/interfaces/position_repository.dart';
 
 class PositionRepositoryImpl implements PositionRepository {
   final GemMapController _mapController;
@@ -48,10 +48,10 @@ class PositionRepositoryImpl implements PositionRepository {
   }
 
   @override
-  Coordinates? screenSizeToCoordinates(Size screenSize) {
+  Coordinates? screenSizeToCoordinates({required int x, required int y}) {
     return _mapController.transformScreenToWgs(XyType(
-      x: screenSize.width ~/ 2,
-      y: screenSize.height ~/ 2,
+      x: x,
+      y: y,
     ));
   }
 

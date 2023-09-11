@@ -11,12 +11,8 @@ class FileUtility {
   }
 
   static Future<String> getApiKey() async {
-    Map<String, dynamic> data;
-    if (kIsWeb) {
-      data = await loadFromJson("settings.json");
-    } else {
-      data = await loadFromJson("assets/settings.json");
-    }
+    const filePath = kIsWeb ? "settings.json" : "assets/settings.json";
+    final data = await loadFromJson(filePath);
     return data["api_key"];
   }
 }
