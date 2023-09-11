@@ -37,9 +37,12 @@ class LandmarkPanel extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(landmarkInfo.name,
-                            style: const TextStyle(
-                                color: Colors.black, fontSize: 25)),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(landmarkInfo.name,
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 25)),
+                        ),
                         Text(
                           '${landmarkInfo.coordinates.latitude}, ${landmarkInfo.coordinates.longitude}',
                           style: const TextStyle(

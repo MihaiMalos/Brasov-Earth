@@ -1,12 +1,10 @@
 // ignore_for_file: use_build_context_synchronously
-
 import 'package:brasov_earth/injection_container.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_cubit.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_state.dart';
 import 'package:brasov_earth/screens/home_page/view/widgets/landmark_panel.dart';
 import 'package:brasov_earth/utility/file_utility.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gem_kit/api/gem_sdksettings.dart';
 import 'package:gem_kit/gem_kit_map_controller.dart';
@@ -20,17 +18,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late GemMapController _mapController;
-
   Future<void> onMapCreated(GemMapController controller) async {
     final apiKey = await FileUtility.getApiKey();
-    _mapController = controller;
     InjectionContainer.init(controller);
     SdkSettings.setAppAuthorization(apiKey);
 
     context.read<HomePageCubit>().setRepos();
 
-    _mapController.registerTouchCallback((pos) async {
+    controller.registerTouchCallback((pos) async {
       await context.read<HomePageCubit>().pressOnMap(pos);
     });
   }
@@ -40,7 +35,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: IconButton(
         icon: const Icon(Icons.location_searching),
-        onPressed: () {},
+        onPressed: () async {
+          await context.read<HomePageCubit>().followPosition();
+        },
       ),
       body: Center(
         child: Stack(
@@ -101,8 +98,7 @@ class _HomePageState extends State<HomePage> {
             BlocBuilder<HomePageCubit, HomePageState>(
               builder: (context, state) {
                 if (state.currentState == HomePageStates.landmarkPressed) {
-                  return LandmarkPanel(
-                      landmarkInfo: state.selectedLandmarkInfo!);
+                  return LandmarkPanel(landmarkInfo: state.selectedLandmark!);
                 } else {
                   return Container();
                 }

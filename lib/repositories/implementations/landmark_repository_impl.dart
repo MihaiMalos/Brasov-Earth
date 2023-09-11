@@ -1,5 +1,10 @@
 import 'dart:async';
 import 'dart:math';
+import 'dart:ui';
+import 'package:brasov_earth/repositories/models/interfaces/landmark_info.dart';
+import 'package:gem_kit/api/gem_mapviewpreferences.dart';
+import 'package:gem_kit/api/gem_types.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data';
 
 import 'package:brasov_earth/repositories/interfaces/landmark_repository.dart';
@@ -51,7 +56,7 @@ class LandmarkRepositoryImpl implements LandmarkRepository {
   }
 
   @override
-  Future<Landmark?> selectLandmarkByScreenCoordinates(
+  Future<LandmarkInfo?> selectLandmarkByScreenCoordinates(
       Point<num> position) async {
     await _mapController.selectMapObjects(position);
 
@@ -62,21 +67,27 @@ class LandmarkRepositoryImpl implements LandmarkRepository {
 
     _mapController.activateHighlight(landmarks);
 
-    final result = await landmarks.at(0);
+    final lmk = await landmarks.at(0);
+    final result = await _getLandmarkInfo(lmk);
+
     return result;
   }
 
   @override
-  Future<LandmarkInfo> getLandmarkInfo(Landmark landmark) async {
+  Future<void> deselectLandmark() async {
+    await _mapController.deactivateAllHighlights();
+  }
+
+  Future<LandmarkInfo> _getLandmarkInfo(Landmark landmark) async {
     Uint8List? icon =
         await ImageUtility.decodeImageData(landmark.getImage(100, 100));
     String name = landmark.getName();
     Coordinates coordinates = landmark.getCoordinates();
 
     return LandmarkInfo(
-      icon: icon,
-      name: name,
-      coordinates: coordinates,
+      icon,
+      name,
+      coordinates,
     );
   }
 }
