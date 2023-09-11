@@ -36,6 +36,7 @@ class PositionRepositoryImpl implements PositionRepository {
     }
 
     if (!_hasLiveDataSource) {
+      await _positionService.removeDataSource();
       await _positionService.setLiveDataSource();
       _hasLiveDataSource = true;
     }

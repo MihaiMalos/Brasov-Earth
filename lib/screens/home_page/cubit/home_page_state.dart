@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:brasov_earth/repositories/interfaces/landmark_repository.dart';
+import 'package:brasov_earth/repositories/models/interfaces/landmark_info.dart';
 import 'package:equatable/equatable.dart';
 
 enum HomePageStates {

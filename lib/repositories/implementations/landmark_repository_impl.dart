@@ -1,10 +1,6 @@
 import 'dart:async';
 import 'dart:math';
-import 'dart:ui';
 import 'package:brasov_earth/repositories/models/interfaces/landmark_info.dart';
-import 'package:gem_kit/api/gem_mapviewpreferences.dart';
-import 'package:gem_kit/api/gem_types.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'dart:typed_data';
 
 import 'package:brasov_earth/repositories/interfaces/landmark_repository.dart';
@@ -27,11 +23,11 @@ class LandmarkRepositoryImpl implements LandmarkRepository {
   }
 
   @override
-  Future<List<Landmark>> searchByText(
+  Future<List<LandmarkInfo>> searchByText(
     String text,
     Coordinates coordinates,
   ) async {
-    var completer = Completer<List<Landmark>>();
+    var completer = Completer<List<LandmarkInfo>>();
 
     _searchService.search(text, coordinates, (err, results) async {
       if (err != GemError.success || results == null) {
@@ -39,12 +35,12 @@ class LandmarkRepositoryImpl implements LandmarkRepository {
         return;
       }
       final size = await results.size();
-      List<Landmark> searchResults = [];
+      List<LandmarkInfo> searchResults = [];
 
       for (int i = 0; i < size; i++) {
         final gemLmk = await results.at(i);
-
-        searchResults.add(gemLmk);
+        final modelLmk = await _getLandmarkInfo(gemLmk);
+        searchResults.add(modelLmk);
       }
 
       if (!completer.isCompleted) completer.complete(searchResults);

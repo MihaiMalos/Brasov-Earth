@@ -33,10 +33,22 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: IconButton(
-        icon: const Icon(Icons.location_searching),
-        onPressed: () async {
-          await context.read<HomePageCubit>().followPosition();
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        onPressed: () async =>
+            await context.read<HomePageCubit>().followPosition(),
+        child: const Icon(
+          Icons.location_searching,
+          color: Colors.blue,
+        ),
+      ),
+      bottomSheet: BlocBuilder<HomePageCubit, HomePageState>(
+        builder: (context, state) {
+          if (state.currentState == HomePageStates.landmarkPressed) {
+            return LandmarkPanel(landmarkInfo: state.selectedLandmark!);
+          } else {
+            return const SizedBox();
+          }
         },
       ),
       body: Center(
@@ -95,15 +107,6 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
-            BlocBuilder<HomePageCubit, HomePageState>(
-              builder: (context, state) {
-                if (state.currentState == HomePageStates.landmarkPressed) {
-                  return LandmarkPanel(landmarkInfo: state.selectedLandmark!);
-                } else {
-                  return Container();
-                }
-              },
-            )
           ],
         ),
       ),

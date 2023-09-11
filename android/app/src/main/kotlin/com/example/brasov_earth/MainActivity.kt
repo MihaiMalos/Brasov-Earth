@@ -1,4 +1,4 @@
-package com.magiclane.gem_kit.examples.hello_map
+package com.example.brasov_earth
 
 import io.flutter.embedding.android.FlutterActivity
 
