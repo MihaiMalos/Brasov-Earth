@@ -1,8 +1,10 @@
-import 'package:brasov_earth/repositories/models/interfaces/landmark_info.dart';
+import 'package:brasov_earth/repositories/models/interfaces/landmark_model.dart';
+import 'package:brasov_earth/screens/home_page/cubit/home_page_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LandmarkPanel extends StatelessWidget {
-  final LandmarkInfo landmarkInfo;
+  final LandmarkModel landmarkInfo;
   const LandmarkPanel({super.key, required this.landmarkInfo});
 
   @override
@@ -64,7 +66,11 @@ class LandmarkPanel extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   TextButton.icon(
-                    onPressed: () {},
+                    onPressed: () async {
+                      await context
+                          .read<HomePageCubit>()
+                          .calculateRouteToLandmark(landmarkInfo);
+                    },
                     style: ButtonStyle(
                       backgroundColor: const MaterialStatePropertyAll(
                           Color.fromARGB(255, 11, 148, 72)),

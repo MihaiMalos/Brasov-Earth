@@ -3,6 +3,7 @@ import 'package:brasov_earth/repositories/injection_container.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_cubit.dart';
 import 'package:brasov_earth/screens/home_page/cubit/home_page_state.dart';
 import 'package:brasov_earth/screens/home_page/view/widgets/landmark_panel.dart';
+import 'package:brasov_earth/screens/search_page/cubit/search_page_cubit.dart';
 import 'package:brasov_earth/utility/file_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,11 +24,13 @@ class _HomePageState extends State<HomePage> {
     InjectionContainer.init(controller);
     SdkSettings.setAppAuthorization(apiKey);
 
-    context.read<HomePageCubit>().setRepos();
+    await context.read<HomePageCubit>().setRepos();
+    await context.read<SearchPageCubit>().setRepos();
 
     controller.registerTouchCallback((pos) async {
       await context.read<HomePageCubit>().pressOnMap(pos);
     });
+    await context.read<HomePageCubit>().followPosition();
   }
 
   @override
@@ -47,11 +50,11 @@ class _HomePageState extends State<HomePage> {
                       vertical: MediaQuery.of(context).viewPadding.top + 10,
                       horizontal: 15),
                   child: Container(
-                    height: 45,
+                    height: 48,
                     decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
+                            const BorderRadius.all(Radius.circular(30)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.5),
@@ -62,26 +65,26 @@ class _HomePageState extends State<HomePage> {
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: TextButton(
-                        onPressed: () =>
-                            Navigator.of(context).pushNamed('/search'),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: Row(
-                            children: [
-                              const Icon(
+                        onPressed: () async =>
+                            await Navigator.of(context).pushNamed('/search'),
+                        child: Row(
+                          children: [
+                            const SizedBox(
+                              width: 54,
+                              child: Icon(
                                 Icons.search_rounded,
                                 color: Colors.grey,
                               ),
-                              Text(
-                                "Search here",
-                                style: TextStyle(
-                                  color: Colors.black.withOpacity(0.3),
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w300,
-                                ),
+                            ),
+                            Text(
+                              "Search here",
+                              style: TextStyle(
+                                color: Colors.black.withOpacity(0.5),
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
