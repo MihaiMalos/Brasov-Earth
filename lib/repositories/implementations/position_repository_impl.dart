@@ -16,7 +16,7 @@ class PositionRepositoryImpl implements PositionRepository {
   late PositionService _positionService;
   late PermissionStatus _locationPermissionStatus = PermissionStatus.denied;
   late bool _hasLiveDataSource = false;
-  CoordinatesModel? _currentLocation;
+  CoordinatesModel _currentLocation = CoordinatesModel();
 
   PositionRepositoryImpl({required GemMapController mapController})
       : _mapController = mapController,

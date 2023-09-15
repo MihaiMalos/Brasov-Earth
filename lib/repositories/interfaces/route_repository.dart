@@ -4,7 +4,7 @@ import 'package:brasov_earth/repositories/models/interfaces/coordinates_model.da
 
 abstract interface class RouteRepository {
   Future<void> init();
-  Future<bool> selectRouteByScreenCoordinates(Point<num> pos);
+  Future<RouteModel> selectRouteByScreenCoordinates(Point<num> pos);
 
   Future<void> calculateSingleRoute(
     CoordinatesModel firstLocation,
