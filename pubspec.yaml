@@ -18,6 +18,7 @@ dependencies:
     path: plugins/gem_kit
   equatable:
   permission_handler: ^10.4.3
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:

@@ -44,6 +44,7 @@ class HomePageCubit extends Cubit<HomePageState> {
       final routeChanged =
           await _routeRepository!.selectRouteByScreenCoordinates(pos);
       if (!routeChanged) await _routeRepository!.removeRoutes();
+      await _routeRepository!.simulateRoute();
       await _landmarkRepository!.deselectLandmark();
       emit(state.copyWith(
         selectedLandmark: null,
@@ -70,8 +71,6 @@ class HomePageCubit extends Cubit<HomePageState> {
       _positionRepository!.locationCoordinates;
 
   Future<void> calculateRouteToLandmark(LandmarkModel landmark) async {
-    print(currentLocation ??
-        "NO LOCATION----------------------------------------------");
     if (currentLocation == null) return;
     await _routeRepository!
         .calculateSingleRoute(landmark.coordinates, currentLocation!);

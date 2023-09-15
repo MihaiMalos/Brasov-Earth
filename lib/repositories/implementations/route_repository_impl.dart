@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:brasov_earth/repositories/interfaces/route_repository.dart';
 import 'package:brasov_earth/repositories/models/implementations/coordinates_model_impl.dart';
+import 'package:brasov_earth/repositories/models/implementations/instruction_model_impl.dart';
 import 'package:brasov_earth/repositories/models/interfaces/coordinates_model.dart';
 import 'package:gem_kit/api/gem_landmark.dart';
+import 'package:gem_kit/api/gem_navigationservice.dart';
 import 'package:gem_kit/api/gem_routingpreferences.dart';
 import 'package:gem_kit/api/gem_routingservice.dart';
 import 'package:gem_kit/gem_kit_basic.dart';
@@ -12,6 +14,7 @@ import 'package:gem_kit/gem_kit_map_controller.dart';
 class RouteRepositoryImpl implements RouteRepository {
   final GemMapController _mapController;
   late RoutingService _routingService;
+  late NavigationService _navigationService;
   final List<Route> shownRoutes;
 
   late bool haveRoutes;
@@ -25,6 +28,9 @@ class RouteRepositoryImpl implements RouteRepository {
   Future<void> init() async {
     RoutingService.create(_mapController.mapId).then((service) {
       _routingService = service;
+    });
+    NavigationService.create(_mapController.mapId).then((service) {
+      _navigationService = service;
     });
   }
 
@@ -128,5 +134,15 @@ class RouteRepositoryImpl implements RouteRepository {
     String minutesText = '$minutes min'; // Minutes text
 
     return hoursText + minutesText;
+  }
+
+  @override
+  Future<void> simulateRoute() async {
+    if (shownRoutes.isEmpty) return;
+    await _navigationService.startSimulation(shownRoutes.elementAt(0),
+        (type, instruction) async {
+      if (instruction == null) return;
+      //final ins = await InstructionModelImpl.fromGemInstruction(instruction);
+    });
   }
 }
